@@ -1,3 +1,4 @@
+app/Main
 dist
 dist-*
 cabal-dev
