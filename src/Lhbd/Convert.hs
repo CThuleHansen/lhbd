@@ -1,13 +1,13 @@
-module Convert where
+module Lhbd.Convert where
 
-import qualified Markup
-import qualified Html
+import qualified Lhbd.Markup as Markup
+import qualified Lhbd.Html as Html
 
 convertStructure :: Markup.Structure -> Html.Structure
 convertStructure structure =
   case structure of
-    Markup.Heading 1 txt ->
-      Html.h1_ txt
+    Markup.Heading nr txt -> 
+      Html.h_ nr txt
 
     Markup.Paragraph p ->
       Html.p_ p
@@ -20,3 +20,6 @@ convertStructure structure =
 
     Markup.CodeBlock list ->
       Html.code_ (unlines list)
+
+convert :: Html.Title -> Markup.Document -> Html.Html
+convert title = Html.html_ title . foldMap convertStructure

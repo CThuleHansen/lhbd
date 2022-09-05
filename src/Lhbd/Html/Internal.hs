@@ -1,4 +1,5 @@
-module Html.Internal where
+module Lhbd.Html.Internal where
+import GHC.Natural (Natural)
 
 -- * types
 newtype Html
@@ -28,9 +29,10 @@ code_ = Structure . el "pre" .escape
 h1_ :: String -> Structure
 h1_ = Structure . el "h1" . escape
 
--- Type class instances are exported automatically
-instance Semigroup Structure where
-    (Structure a) <> (Structure b) = Structure (a <> b)
+h_ :: Natural -> String -> Structure
+h_ nr = Structure . el ("h" <> show nr) . escape
+
+
 
 liElement :: Structure -> String
 liElement = el "li" . getStructureString
@@ -75,3 +77,24 @@ escape =
                 _ -> [c]
     in
         concat . map escapeChar
+
+empty_ :: Structure
+empty_ = Structure ""
+
+-- Type class instances are exported automatically
+instance Semigroup Structure where
+    (Structure a) <> (Structure b) = Structure (a <> b)
+
+instance Monoid Structure where
+  mempty = empty_
+
+-- The two versions below should do the same
+-- TBD
+assembleHtml :: [Structure] -> Structure
+assembleHtml xs = foldl (\acc x -> acc <> x) empty_ xs
+
+concatStructure :: [Structure] -> Structure
+concatStructure list =
+  case list of
+    [] -> empty_
+    x : xs -> x <> concatStructure xs

@@ -1,4 +1,4 @@
-module Html 
+module Lhbd.Html 
     (
         Html
     ,   Title
@@ -10,7 +10,10 @@ module Html
     ,   ul_
     ,   ol_
     ,   code_
+    ,   h_
+    ,   getStructureString
+    ,   empty_
     )
     where
 
-import Html.Internal
+import Lhbd.Html.Internal
